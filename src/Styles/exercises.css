@@ -1,0 +1,108 @@
+
+
+/* Title */
+.exercises-page h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* GIFs */
+.exercise-gif {
+  width: 100%;
+  max-width: 260px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transition: transform 0.25s ease;
+}
+.exercise-gif:hover {
+  transform: scale(1.03);
+}
+
+/* TRAINING TIPS: centered container with aligned items */
+.exercise-tips h3 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.tips-list {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tip-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+}
+.check-icon {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 6px;
+  background: #28a745;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+.tip-text {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Motivation quote */
+.motivation-quote {
+  background: linear-gradient(135deg,#ff6b6b,#c70039);
+  color: #fff;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+.motivation-quote h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.motivation-quote p {
+  margin: 0;
+  opacity: 0.95;
+}
+
+/* Plans compare - equal height cards */
+.plans-compare h3 { font-weight: 700; margin-bottom: 1rem; }
+.plan-card {
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+  min-height: 210px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.plan-card h5 { font-weight: 800; margin-bottom: 8px; font-size: 18px; }
+.plan-card ul { margin-top: 10px; padding-left: 18px; }
+.plan-card.beginner {
+  background: linear-gradient(135deg,#4facfe,#00f2fe);
+}
+.plan-card.advanced {
+  background: linear-gradient(135deg,#ff416c,#ff4b2b);
+}
+
+/* CTA button spacing */
+.exercises-page .btn-lg {
+  padding: 12px 28px;
+  font-size: 1.05rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .tips-list { padding: 0 8px; }
+  .exercise-gif { max-width: 100%; }
+  .plan-card { min-height: auto; }
+}

@@ -1,0 +1,129 @@
+/* HERO */
+.hero {
+  background: url("/images/bodystrength.webp") center/cover no-repeat;
+  padding: 120px 0;
+  color: #fff;
+}
+.hero-title {
+  font-size: 48px;
+  font-weight: 700;
+}
+.hero-subtitle {
+  font-size: 20px;
+  margin-top: 12px;
+}
+
+/* PLANNER INTRO */
+.planner-intro {
+  max-width: 800px;
+}
+.planner-intro h2 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+/* FEATURES */
+.feature-img {
+  width: 100%;
+  max-width: 180px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  transition: transform 0.3s;
+}
+.feature-img:hover {
+  transform: scale(1.05);
+}
+.features h4 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+.features p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+/* CTA */
+.cta {
+  background: #f8f9fa;
+}
+.cta h2 {
+  font-size: 28px;
+  font-weight: 600;
+}
+.cta p {
+  font-size: 16px;
+  color: #444;
+}
+
+/* CAROUSEL */
+.gallery img {
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* BENEFITS */
+.benefits h4 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+.benefits p {
+  font-size: 15px;
+  color: #555;
+}
+
+/* FAQ */
+.faq {
+  max-width: 800px;
+}
+
+/* TESTIMONIALS */
+.testimonial-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #dc3545;
+}
+.testimonial p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* FINAL CTA */
+.cta-banner {
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  color: #fff;
+}
+.cta-banner h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* SCROLL REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.gallery img {
+  max-height: 300px;
+  object-fit: contain;
+  width: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Black arrows */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(100%);  /* makes arrows black */
+}

@@ -1,0 +1,107 @@
+.feedback-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.feedback-form {
+  background: #fff;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+.feedback-form:hover {
+  transform: translateY(-3px);
+}
+
+.feedback-card {
+  border-radius: 8px;
+  background: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.feedback-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* ⭐ Interactive star rating */
+.rating-stars {
+  font-size: 25px;
+  cursor: pointer;
+}
+.rating-stars .star {
+  color: #ccc;
+  transition: color 0.2s, transform 0.2s;
+}
+.rating-stars .star:hover {
+  transform: scale(1.2);
+}
+.rating-stars .star.filled {
+  color: gold;
+}
+
+.rating-display {
+  font-size: 18px;
+  color: gold;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.7s ease-in-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slide-up {
+  animation: slideUp 0.6s ease forwards;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+/* Success message */
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 10px 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 20px;
+  animation: fadeInOut 3s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10%, 90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+.feedback-user {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.feedback-user i {
+  font-size: 1.1rem;
+  color: #6c757d;
+}
