@@ -16,7 +16,7 @@ export default function Exercises() {
   }, [showToast]);
 
   function handleCreatePlanClick() {
-    // use auth context like Home does
+
     const logged = auth && typeof auth.isLoggedIn === "function" ? auth.isLoggedIn() : false;
     if (logged) {
       setShowToast(true);

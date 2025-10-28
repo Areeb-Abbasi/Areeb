@@ -105,6 +105,17 @@ export default function Supplements() {
     setTimeout(() => setShowToast(false), 4000);
   };
 
+  // ✅ Validate before next step
+  const handleSaveAndContinue = () => {
+    const required = ["name", "email", "phone", "address", "city", "postal"];
+    const isEmpty = required.some((field) => !formData[field].trim());
+    if (isEmpty) {
+      alert("⚠️ Please fill in all fields before continuing.");
+      return;
+    }
+    setStep(2);
+  };
+
   return (
     <div className="supplement-page">
       {/* Hero */}
@@ -189,10 +200,11 @@ export default function Supplements() {
         </div>
       )}
 
-      {/* Buy Now Form Modal */}
+      {/* ✅ Buy Now Form Modal */}
       {showFormModal && (
-        <div className="buy-form-overlay">
-          <div className="buy-form-modal">
+        <div className="buy-form-overlay" onClick={() => setShowFormModal(false)}>
+          <div className="buy-form-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="close-modal-btn" onClick={() => setShowFormModal(false)}>&times;</button>
             <h3>{step === 1 ? "Shipping Details" : "Review & Confirm"}</h3>
             <hr />
             {step === 1 ? (
@@ -208,11 +220,11 @@ export default function Supplements() {
                     />
                   </div>
                 ))}
-                <button className="btn btn-danger w-100" onClick={() => setStep(2)}>
+                <button className="btn btn-danger w-100" onClick={handleSaveAndContinue}>
                   Save & Continue
                 </button>
               </div>
-            ) :+ (
+            ) : (
               <div>
                 <h5>Confirm Your Details</h5>
                 <ul className="list-group mb-3">
@@ -233,28 +245,66 @@ export default function Supplements() {
         </div>
       )}
 
-      {/* My Orders Modal */}
+      {/* ✅ My Orders Modal (Fixed) */}
       {showOrdersModal && (
-        <div className="orders-overlay" onClick={() => setShowOrdersModal(false)}>
-          <div className="orders-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="close-modal-btn" onClick={() => setShowOrdersModal(false)}>&times;</button>
-            <h3>My Orders</h3>
+        <div
+          className="orders-overlay"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0,0,0,0.6)",
+            zIndex: 2000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onClick={() => setShowOrdersModal(false)}
+        >
+          <div
+            className="orders-modal bg-white p-4 rounded shadow-lg"
+            style={{
+              width: "500px",
+              maxHeight: "80vh",
+              overflowY: "auto",
+              position: "relative",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="close-modal-btn"
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                background: "transparent",
+                border: "none",
+                fontSize: "1.5rem",
+                cursor: "pointer",
+              }}
+              onClick={() => setShowOrdersModal(false)}
+            >
+              &times;
+            </button>
+            <h3 className="mb-3">My Orders</h3>
             <hr />
             {orders.length === 0 ? (
               <p>No orders yet.</p>
             ) : (
               orders.map((o) => (
-                <div className="order-item mb-3" key={o.id}>
+                <div className="order-item mb-3 border-bottom pb-2" key={o.id}>
                   <h6>{o.name}</h6>
                   <p><strong>Price:</strong> Rs. {o.price}</p>
                   <p><strong>Date:</strong> {o.date}</p>
-                  <hr />
                 </div>
               ))
             )}
           </div>
         </div>
       )}
+
 
       {/* Toast */}
       {showToast && (
