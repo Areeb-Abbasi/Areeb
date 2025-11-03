@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaCamera } from "react-icons/fa";
-
 import "../styles/profile.css";
 
 export default function Profile() {
-  const { user, loading, logout, updateUser } = useAuth();
+  const { user, loading, logout, updateUser, updateProfilePicture } = useAuth();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
@@ -28,13 +27,14 @@ export default function Profile() {
 
   // 🧩 FIX: Safe redirect after auth check
   useEffect(() => {
-    if (loading) return; // Wait for AuthContext to finish restoring
+    if (loading) return;
     if (!user) {
       console.warn("⚠️ No user found, redirecting to login");
       navigate("/login", { replace: true });
     }
   }, [loading, user, navigate]);
 
+  // ✅ FIXED: Load user data and profile picture
   useEffect(() => {
     if (user) {
       console.log("📝 Initializing form with user:", user);
@@ -50,8 +50,18 @@ export default function Profile() {
         goal: user.goal || "",
         activity: user.activity || ""
       });
+      
+      // ✅ FIXED: Load profile picture from user data
+      if (user.profilePic) {
+        console.log("🖼️ Loading profile picture from user data:", user.profilePic);
+        setProfilePic(user.profilePic);
+      } else {
+        console.log("📸 No profile picture found in user data");
+        setProfilePic(null);
+      }
     }
   }, [user]);
+
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
@@ -68,39 +78,36 @@ export default function Profile() {
     }));
   };
 
+  // ✅ FIXED: Handle image upload - properly save to user data
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setProfilePic(e.target.result);
-        localStorage.setItem(`profilePic_${user.email}`, e.target.result);
+        const newProfilePic = e.target.result;
+        console.log("🖼️ Uploading new profile picture");
+        
+        // Set local state immediately for UI update
+        setProfilePic(newProfilePic);
+        
+        // ✅ FIXED: Save to user data using updateProfilePicture
+        if (user?.email) {
+          updateProfilePicture(user.email, newProfilePic);
+          console.log("✅ Profile picture saved to user data");
+        }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // Load profile picture from localStorage on component mount
-  useEffect(() => {
-    if (user?.email) {
-      const savedPic = localStorage.getItem(`profilePic_${user.email}`);
-      if (savedPic) {
-        setProfilePic(savedPic);
-      }
-    }
-  }, [user]);
-
-  // Update profile function using the updateUser from AuthContext
   const updateProfile = async (updatedData) => {
     try {
       const updatedUser = { ...user, ...updatedData };
       console.log("🔄 Updating profile with data:", updatedData);
 
-      // Use the updateUser function from AuthContext
       if (updateUser) {
         updateUser(updatedUser);
 
-        // Verify the update worked
         const currentEmail = localStorage.getItem("fp_current");
         const users = JSON.parse(localStorage.getItem("fp_users") || "[]");
         const foundUser = users.find(u => u.email === currentEmail);
@@ -124,13 +131,9 @@ export default function Profile() {
 
       if (success) {
         setIsEditing(false);
-
-        // Show success message
         setShowSuccessMessage(true);
-
         console.log("✅ Profile updated successfully!");
 
-        // Hide success message after 3 seconds
         setTimeout(() => {
           setShowSuccessMessage(false);
         }, 3000);
@@ -162,7 +165,6 @@ export default function Profile() {
     setIsEditing(false);
   };
 
-  // ✅ FIXED: Logout with confirmation
   const handleLogoutClick = () => {
     setShowLogoutConfirm(true);
   };
@@ -269,7 +271,6 @@ export default function Profile() {
               user.firstName ? user.firstName.charAt(0).toUpperCase() : "U"
             )}
 
-            {/* Camera icon overlay */}
             <button
               className="camera-icon-btn"
               onClick={() => document.getElementById('profile-upload').click()}
@@ -305,7 +306,7 @@ export default function Profile() {
           </button>
           <button
             className="btn btn-outline-danger ms-2"
-            onClick={handleLogoutClick} // Changed to handleLogoutClick
+            onClick={handleLogoutClick}
           >
             Logout
           </button>

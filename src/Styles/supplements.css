@@ -1322,3 +1322,143 @@
     flex-direction: column;
   }
 }
+/* Fix modal overflow issue on mobile (375px) */
+@media (max-width: 576px) {
+  .custom-modal-container {
+    max-width: 95%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom-modal-content {
+    flex: 1;
+    overflow-y: auto; /* enable scrolling for long content */
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+  }
+
+  .modal-left img {
+    width: 80%;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px auto;
+  }
+
+  .modal-right {
+    padding: 10px 15px;
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    position: sticky;
+    bottom: 0;
+  }
+
+  .modal-buttons .btn {
+    flex: 1;
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 768px) {
+  .custom-modal-container {
+    max-width: 90%;
+    max-height: 90vh;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+  }
+
+  .custom-modal-content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Left side - Image */
+  .modal-left {
+    flex: 0 0 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-left img {
+    width: 100%;
+    max-width: 220px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Right side - Text */
+  .modal-right {
+    flex: 1;
+    padding-right: 10px;
+  }
+
+  .modal-right h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+  }
+
+  .modal-right .modal-desc {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .modal-right p {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+
+  .modal-right .price {
+    font-size: 1.2rem;
+    color: #d00;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+
+  /* Bottom Buttons */
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 20px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    position: sticky;
+    bottom: 0;
+  }
+
+  .modal-buttons .btn {
+    flex: 1;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+  }
+
+  .btn-success {
+    background-color: #198754;
+    color: white;
+    border: none;
+  }
+}

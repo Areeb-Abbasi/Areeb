@@ -52,16 +52,43 @@ export function AuthProvider({ children }) {
 
   const updateUser = (updatedUserData) => {
     try {
+      console.log("🔄 Updating user data:", updatedUserData);
       const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
       const updatedUsers = users.map((u) =>
-        u.email === updatedUserData.email ? updatedUserData : u
+        u.email === updatedUserData.email ? { ...u, ...updatedUserData } : u
       );
       localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
       setUser(updatedUserData);
+      console.log("✅ User data updated successfully");
     } catch (error) {
-      console.error("Error updating user:", error);
+      console.error("❌ Error updating user:", error);
     }
   };
+
+  // ✅ FIXED: Update profile picture - this now properly updates the user object
+  const updateProfilePicture = (email, profilePic) => {
+    try {
+      console.log("🖼️ Updating profile picture for:", email);
+      const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+      const updatedUsers = users.map((u) =>
+        u.email === email ? { ...u, profilePic } : u
+      );
+
+      // ✅ Persist back to localStorage
+      localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
+
+      // ✅ Also update CURRENT_KEY data to ensure session reload keeps the new pic
+      const updatedUser = updatedUsers.find((u) => u.email === email);
+      if (updatedUser) {
+        localStorage.setItem(CURRENT_KEY, email);
+        setUser(updatedUser); // refresh current session user
+        console.log("✅ Profile picture updated and saved for:", email);
+      }
+    } catch (error) {
+      console.error("❌ Error updating profile picture:", error);
+    }
+  };
+
 
   const registerUser = (newUser) => {
     const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
@@ -114,6 +141,7 @@ export function AuthProvider({ children }) {
         logout,
         isLoggedIn,
         updateUser,
+        updateProfilePicture,
       }}
     >
       {!loading && children}
