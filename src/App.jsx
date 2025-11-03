@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -20,9 +20,13 @@ import BodybuildingPlan from "./pages/BodybuildingPlan";
 import ScrollToTopButton from "./components/ScrollToTopButton"; 
 import Feedback from "./pages/Feedback";
 import Supplements from "./pages/Supplements";
-
+import WhatsApp from "./pages/WhatsApp"; // ✅ Added this line
 
 export default function App() {
+  const location = useLocation();
+  const hideWhatsApp =
+    location.pathname === "/login" || location.pathname === "/register";
+
   return (
     <AuthProvider>
       <Navbar />
@@ -38,7 +42,6 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/supplements" element={<Supplements />} />
-
           <Route
             path="/profile"
             element={
@@ -52,13 +55,14 @@ export default function App() {
           <Route path="/plans/300" element={<ThreeHundredWorkout />} />
           <Route path="/plans/bodybuilding" element={<BodybuildingPlan />} />
           <Route path="/feedback" element={<Feedback />} />
-
-
         </Routes>
       </main>
 
       <Footer />
       <ScrollToTopButton />
+
+      {/* ✅ WhatsApp Floating Button (not on Login/Register) */}
+      {!hideWhatsApp && <WhatsApp />}
     </AuthProvider>
   );
 }

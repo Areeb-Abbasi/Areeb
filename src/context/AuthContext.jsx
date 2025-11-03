@@ -8,24 +8,62 @@ const CURRENT_KEY = "fp_current";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // prevents flicker
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // ✅ Restore login state on refresh
+  // ✅ Fix: Correctly restore session before any redirect or component mounts
   useEffect(() => {
-    const currentEmail = localStorage.getItem(CURRENT_KEY);
-    if (currentEmail) {
-      const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
-      const foundUser = users.find((x) => x.email === currentEmail);
-      if (foundUser) {
-        setUser(foundUser);
+    const restoreSession = () => {
+      try {
+        const currentEmail = localStorage.getItem(CURRENT_KEY);
+        if (!currentEmail) {
+          setLoading(false);
+          return;
+        }
+
+        const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+        const foundUser = users.find((u) => u.email === currentEmail);
+
+        if (foundUser) {
+          console.log("✅ Session restored:", foundUser.email);
+          setUser(foundUser);
+        } else {
+          console.warn("⚠️ Stored user not found. Clearing session.");
+          localStorage.removeItem(CURRENT_KEY);
+        }
+      } catch (error) {
+        console.error("Error restoring session:", error);
+        localStorage.removeItem(CURRENT_KEY);
+      } finally {
+        // ✅ Delay ensures state updates before routes render
+        setTimeout(() => setLoading(false), 150);
       }
-    }
-    setLoading(false);
+    };
+
+    restoreSession();
   }, []);
 
-  // ✅ Register user
-  function registerUser(newUser) {
+  // ✅ When user state changes, persist it to localStorage
+  useEffect(() => {
+    if (user?.email) {
+      localStorage.setItem(CURRENT_KEY, user.email);
+    }
+  }, [user]);
+
+  const updateUser = (updatedUserData) => {
+    try {
+      const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+      const updatedUsers = users.map((u) =>
+        u.email === updatedUserData.email ? updatedUserData : u
+      );
+      localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
+      setUser(updatedUserData);
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
+
+  const registerUser = (newUser) => {
     const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
     if (users.some((u) => u.email === newUser.email)) {
       return { ok: false, message: "Email already registered." };
@@ -33,10 +71,9 @@ export function AuthProvider({ children }) {
     users.push(newUser);
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
     return { ok: true };
-  }
+  };
 
-  // ✅ Validate credentials only (for OTP step)
-  function loginUser(email, password) {
+  const loginUser = (email, password) => {
     const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
     const foundUser = users.find(
       (x) => x.email === email && x.password === password
@@ -44,30 +81,27 @@ export function AuthProvider({ children }) {
     if (!foundUser) {
       return { ok: false, message: "Invalid credentials." };
     }
+    localStorage.setItem(CURRENT_KEY, foundUser.email);
+    setUser(foundUser);
     return { ok: true, user: foundUser };
-  }
+  };
 
-  // ✅ Called after OTP verification success
-  function completeLoginAfterOtp(email) {
+  const completeLoginAfterOtp = (email) => {
     const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
     const foundUser = users.find((x) => x.email === email);
     if (foundUser) {
       localStorage.setItem(CURRENT_KEY, foundUser.email);
       setUser(foundUser);
     }
-  }
+  };
 
-  // ✅ Logout user
-  function logout() {
+  const logout = () => {
     localStorage.removeItem(CURRENT_KEY);
     setUser(null);
-    navigate("/login");
-  }
+    navigate("/login", { replace: true });
+  };
 
-  // ✅ Helper
-  function isLoggedIn() {
-    return !!user;
-  }
+  const isLoggedIn = () => !!user;
 
   return (
     <AuthContext.Provider
@@ -79,6 +113,7 @@ export function AuthProvider({ children }) {
         completeLoginAfterOtp,
         logout,
         isLoggedIn,
+        updateUser,
       }}
     >
       {!loading && children}
@@ -86,6 +121,10 @@ export function AuthProvider({ children }) {
   );
 }
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
