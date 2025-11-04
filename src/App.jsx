@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -7,7 +7,6 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import WorkoutPlans from './pages/WorkoutPlans';
 import Exercises from './pages/Exercises';
-import ExerciseDetail from './pages/ExerciseDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
@@ -20,15 +19,27 @@ import BodybuildingPlan from "./pages/BodybuildingPlan";
 import ScrollToTopButton from "./components/ScrollToTopButton"; 
 import Feedback from "./pages/Feedback";
 import Supplements from "./pages/Supplements";
-import WhatsApp from "./pages/WhatsApp"; // ✅ Added this line
+import WhatsApp from "./pages/WhatsApp"; 
+import Loader from './components/Loader'; // ✅ Fitness-themed loader
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
+
+  // show loader on first load and route change
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 1000); // Loader delay
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
   const hideWhatsApp =
     location.pathname === "/login" || location.pathname === "/register";
 
   return (
     <AuthProvider>
+      {loading && <Loader />} {/* ✅ Fitness loader active */}
+
       <Navbar />
 
       <main className="container my-4">
@@ -38,7 +49,6 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/workout-plans" element={<WorkoutPlans />} />
           <Route path="/exercises" element={<Exercises />} />
-          <Route path="/exercise/:id" element={<ExerciseDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/supplements" element={<Supplements />} />

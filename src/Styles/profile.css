@@ -1,4 +1,3 @@
-/* Profile.css - Fixed Spacing and Layout */
 .profile-container {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
@@ -15,7 +14,7 @@
 }
 
 .profile-header {
-  background: white;
+  background: rgb(245, 243, 243);
   border-radius: 20px;
   padding: 40px;
   margin-bottom: 30px;
@@ -986,5 +985,5 @@
 
 
 .camera-icon-btn {
-  opacity: 0.9; /* Adjust to always visible, or set to 0 to show only on hover */
+  opacity: 0.9; 
 }

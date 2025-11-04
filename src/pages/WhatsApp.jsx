@@ -16,7 +16,8 @@ export default function WhatsApp() {
         alt="WhatsApp"
         className="whatsapp-icon"
       />
-      <span className="whatsapp-text">Contact us for any query</span>
+      <span className="whatsapp-text">Contact us
+       </span>
     </a>
   );
 }

@@ -31,7 +31,7 @@
   font-size: 14px;
 }
 
-/* Responsive: hide text on small screens */
+
 @media (max-width: 600px) {
   .whatsapp-text {
     display: none;
