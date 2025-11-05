@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
+import Swal from "sweetalert2"; // ✅ Added SweetAlert
 import "../styles/login.css";
 
 export default function Login() {
@@ -17,7 +18,6 @@ export default function Login() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Automatically clear error after 2 seconds
   useEffect(() => {
     if (err) {
       const timer = setTimeout(() => setErr(""), 2000);
@@ -69,8 +69,19 @@ export default function Login() {
 
     if (otp == generatedOtp) {
       completeLoginAfterOtp(email);
-      setSuccess("🎉 Login successful! Redirecting to your profile...");
-      setTimeout(() => navigate("/profile"), 1500);
+
+
+      Swal.fire({
+        title: "Login Successful!",
+        text: "Welcome! Redirecting to your profile...",
+        icon: "success",
+        confirmButtonColor: "#dc3545",
+        timer: 4000,
+        showConfirmButton: false,
+        timerProgressBar: true,
+      });
+
+      setTimeout(() => navigate("/profile"), 2000);
     } else {
       setErr("❌ Invalid OTP. Please try again. " + Date.now());
     }
