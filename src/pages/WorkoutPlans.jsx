@@ -37,6 +37,7 @@ export default function WorkoutPlans() {
       title: "Advanced Workout",
       image: "/images/advancedworkout.webp",
       desc: "Challenging routine for experienced lifters.",
+      path: "/plans/advanced",
     },
     {
       title: "Full Body Workout",

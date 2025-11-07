@@ -16,6 +16,7 @@ import FiveByFivePlan from "./pages/FiveByFivePlan";
 import PushPullRoutine from "./pages/PushPullRoutine";
 import ThreeHundredWorkout from "./pages/ThreeHundredWorkout";
 import BodybuildingPlan from "./pages/BodybuildingPlan";
+import AdvancedWorkout from "./pages/AdvancedWorkout"; 
 import ScrollToTopButton from "./components/ScrollToTopButton"; 
 import Feedback from "./pages/Feedback";
 import Supplements from "./pages/Supplements";
@@ -64,6 +65,7 @@ export default function App() {
           <Route path="/plans/push-pull" element={<PushPullRoutine />} />
           <Route path="/plans/300" element={<ThreeHundredWorkout />} />
           <Route path="/plans/bodybuilding" element={<BodybuildingPlan />} />
+           <Route path="/plans/advanced" element={<AdvancedWorkout />} />
           <Route path="/feedback" element={<Feedback />} />
         </Routes>
       </main>

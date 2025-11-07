@@ -4,20 +4,16 @@
   left: 0;
   width: 100%;
   height: 100%;
-  /* Transparent dark overlay instead of white background */
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(2px);
-  
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
   z-index: 2000;
   font-family: "Poppins", sans-serif;
 }
 
-/* Dumbbell structure */
 .dumbbell-loader {
   position: relative;
   width: 60px;
@@ -53,7 +49,6 @@
   transform: translateX(6px);
 }
 
-/* Smooth dumbbell spin */
 .rotating {
   animation: rotateDumbbell 1.6s linear infinite;
 }
