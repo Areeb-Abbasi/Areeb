@@ -8,10 +8,8 @@ export default function Home() {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  // ✅ Toast state
   const [showToast, setShowToast] = useState(false);
 
-  // Scroll Animations
   useEffect(() => {
     const revealElements = document.querySelectorAll(".reveal");
     const revealOnScroll = () => {
@@ -27,7 +25,6 @@ export default function Home() {
     return () => window.removeEventListener("scroll", revealOnScroll);
   }, []);
 
-  // ✅ handler for buttons
   function handleRedirect(path) {
     if (isLoggedIn()) {
       setShowToast(true);
@@ -151,7 +148,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA SECTION */}
+      {/* CTA SECTION - SEPARATE CONTAINER */}
       <section className="cta text-center py-5 reveal">
         <div className="container">
           <h2>Create Your Own Workout Plan</h2>
@@ -165,6 +162,55 @@ export default function Home() {
           >
             Create Plan
           </button>
+        </div>
+      </section>
+
+      {/* TRANSFORMATION SECTION - SEPARATE CONTAINER */}
+      <section className="transform-section py-5 reveal">
+        <div className="container">
+          <div className="text-center mb-5">
+            <h2 className="mb-3">Transform Your Life</h2>
+            <p className="transform-subtitle">
+              Fitness isn't just about workouts — it's about building confidence,
+              discipline, and a stronger mindset.
+            </p>
+          </div>
+
+          <div className="row justify-content-center">
+            <div className="col-md-4 mb-4">
+              <div className="transform-card">
+                <img
+                  src="/images/consistency.jpeg"
+                  alt="Consistency"
+                  className="transform-img"
+                />
+                <h5>Stay Consistent</h5>
+                <p>Small daily actions lead to massive results over time. Build habits that last.</p>
+              </div>
+            </div>
+            <div className="col-md-4 mb-4">
+              <div className="transform-card">
+                <img
+                  src="/images/mindset.png"
+                  alt="Mindset"
+                  className="transform-img"
+                />
+                <h5>Build a Strong Mindset</h5>
+                <p>Transform your thoughts to transform your body and achieve your goals.</p>
+              </div>
+            </div>
+            <div className="col-md-4 mb-4">
+              <div className="transform-card">
+                <img
+                  src="/images/trackresult.jpeg"
+                  alt="Results"
+                  className="transform-img"
+                />
+                <h5>Track Your Progress</h5>
+                <p>Measure your results and celebrate every step of your transformation journey.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -201,7 +247,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Prev / Next Arrows */}
           <button
             className="carousel-control-prev"
             type="button"
@@ -266,7 +311,7 @@ export default function Home() {
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="2">
-            <Accordion.Header>What’s the membership cost?</Accordion.Header>
+            <Accordion.Header>What's the membership cost?</Accordion.Header>
             <Accordion.Body>
               Membership plans vary based on your goals. Contact us for details.
             </Accordion.Body>
@@ -319,7 +364,7 @@ export default function Home() {
         </button>
       </section>
 
-      {/* ✅ Bootstrap Toast */}
+      {/* TOAST */}
       <div
         className="toast-container position-fixed bottom-0 end-0 p-3"
         style={{ zIndex: 1055 }}

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import '../styles/about.css';
 
@@ -26,7 +25,7 @@ export default function About() {
           <div className="col-md-4 text-md-start text-center">
             <h3>What we do</h3>
             <p>
-              We simplify fitness by giving you structured plans, expert guidance, and motivation 
+              We simplify fitness by giving you structured plans, expert guidance, and motivation
               so you can stay consistent and achieve long-term results.
             </p>
             <ul className="list-unstyled">
@@ -50,7 +49,7 @@ export default function About() {
                 <img src="/images/rober.webp" alt="Trainer Rober" className="trainer-img img-fluid" />
                 <h5 className="mt-2">Rober Wilson</h5>
                 <p className="text-muted small">Strength & Conditioning Expert</p>
-              </div> 
+              </div>
 
               {/* Trainer 3 */}
               <div className="col-md-4 mb-4">
@@ -68,8 +67,8 @@ export default function About() {
         <div className="mission text-center my-5">
           <h3>Our Mission</h3>
           <p>
-            To make fitness simple, accessible, and enjoyable for everyone. 
-            We believe that with the right guidance and mindset, anyone can transform 
+            To make fitness simple, accessible, and enjoyable for everyone.
+            We believe that with the right guidance and mindset, anyone can transform
             their body and lifestyle.
           </p>
         </div>

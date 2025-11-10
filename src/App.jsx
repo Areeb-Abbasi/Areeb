@@ -21,7 +21,7 @@ import ScrollToTopButton from "./components/ScrollToTopButton";
 import Feedback from "./pages/Feedback";
 import Supplements from "./pages/Supplements";
 import WhatsApp from "./pages/WhatsApp"; 
-import Loader from './components/Loader'; // ✅ Fitness-themed loader
+import Loader from './components/Loader'; 
 
 export default function App() {
   const [loading, setLoading] = useState(true);
