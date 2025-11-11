@@ -1,4 +1,3 @@
-// src/pages/BodybuildingPlan.jsx
 import React from "react";
 import "../styles/bodybuildingplan.css";
 
@@ -82,7 +81,7 @@ export default function BodybuildingPlan() {
       <section className="plan-section mb-5">
         <h3>Nutrition for Growth</h3>
         <p>
-          Building muscle isn’t just about training — nutrition is the foundation. 
+          Building muscle isn’t just about training — nutrition is the foundation.
           Fuel your body with the right macronutrients for growth and recovery.
         </p>
         <ul>
@@ -110,7 +109,7 @@ export default function BodybuildingPlan() {
       <section className="plan-section mb-5">
         <h3>Track Your Progress</h3>
         <p>
-          Your body changes when you stay consistent. Record your lifts, measure your progress, 
+          Your body changes when you stay consistent. Record your lifts, measure your progress,
           and take photos every 2–3 weeks to track results. Progress is built through patience.
         </p>
         <ul>

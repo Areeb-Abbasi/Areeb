@@ -25,7 +25,7 @@ export default function Profile() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-  
+
   useEffect(() => {
     if (loading) return;
     if (!user) {
@@ -34,7 +34,7 @@ export default function Profile() {
     }
   }, [loading, user, navigate]);
 
- 
+
   useEffect(() => {
     if (user) {
       console.log("📝 Initializing form with user:", user);
@@ -50,8 +50,8 @@ export default function Profile() {
         goal: user.goal || "",
         activity: user.activity || ""
       });
-      
-      
+
+
       if (user.profilePic) {
         console.log("🖼️ Loading profile picture from user data:", user.profilePic);
         setProfilePic(user.profilePic);
@@ -78,7 +78,7 @@ export default function Profile() {
     }));
   };
 
-  
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -86,11 +86,11 @@ export default function Profile() {
       reader.onload = (e) => {
         const newProfilePic = e.target.result;
         console.log("🖼️ Uploading new profile picture");
-        
-        
+
+
         setProfilePic(newProfilePic);
-        
-        
+
+
         if (user?.email) {
           updateProfilePicture(user.email, newProfilePic);
           console.log("✅ Profile picture saved to user data");

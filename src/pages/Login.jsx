@@ -89,7 +89,7 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      {/* Floating success messages */}
+      
       {success && (
         <div className="floating-alert alert-success" key={success}>
           {success}

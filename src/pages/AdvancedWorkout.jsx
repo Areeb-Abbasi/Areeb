@@ -13,26 +13,26 @@ export default function AdvancedWorkout() {
 
             <div className="workout-content">
                 <div className="overview-section">
-  <h2>Overview</h2>
-  <ul className="overview-list">
-    <li>
-      <span className="icon">📞</span>
-      <span>5-6 workouts per week</span>
-    </li>
-    <li>
-      <span className="icon">✅</span>
-      <span>Focus: Strength, Hypertrophy, Power</span>
-    </li>
-    <li>
-      <span className="icon">🌟</span>
-      <span>Level: Advanced Lifters</span>
-    </li>
-    <li>
-      <span className="icon">📘</span>
-      <span>Methods: Dropsets, Supersets, Rest-Pause</span>
-    </li>
-  </ul>
-</div>
+                    <h2>Overview</h2>
+                    <ul className="overview-list">
+                        <li>
+                            <span className="icon">📞</span>
+                            <span>5-6 workouts per week</span>
+                        </li>
+                        <li>
+                            <span className="icon">✅</span>
+                            <span>Focus: Strength, Hypertrophy, Power</span>
+                        </li>
+                        <li>
+                            <span className="icon">🌟</span>
+                            <span>Level: Advanced Lifters</span>
+                        </li>
+                        <li>
+                            <span className="icon">📘</span>
+                            <span>Methods: Dropsets, Supersets, Rest-Pause</span>
+                        </li>
+                    </ul>
+                </div>
 
                 <div className="why-choose-section">
                     <h2>Why Choose Advanced Training?</h2>

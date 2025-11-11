@@ -42,7 +42,10 @@
   font-size: 18px;
   color: gold;
 }
-
+button:not(:disabled) {
+    cursor: pointer;
+    padding: 8px;
+}
 /* Animations */
 @keyframes fadeIn {
   from {

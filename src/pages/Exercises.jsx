@@ -8,7 +8,6 @@ export default function Exercises() {
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
 
-  // auto-hide toast after 3s
   useEffect(() => {
     let t;
     if (showToast) t = setTimeout(() => setShowToast(false), 3000);
@@ -127,7 +126,7 @@ export default function Exercises() {
         </button>
       </div>
 
-      
+
       {showToast && (
         <div
           className="toast align-items-center bg-danger text-white border-0 show position-fixed bottom-0 end-0 m-3"

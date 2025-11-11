@@ -1,4 +1,3 @@
-// src/components/ScrollToTopButton.jsx
 import React, { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import "../styles/scrolltotop.css";
