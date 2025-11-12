@@ -4,9 +4,10 @@ import { useAuth } from "../context/AuthContext";
 import "../styles/exercises.css";
 
 export default function Exercises() {
-  const auth = useAuth();
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("all");
 
   useEffect(() => {
     let t;
@@ -15,133 +16,256 @@ export default function Exercises() {
   }, [showToast]);
 
   function handleCreatePlanClick() {
-
-    const logged = auth && typeof auth.isLoggedIn === "function" ? auth.isLoggedIn() : false;
-    if (logged) {
+    if (isLoggedIn()) {
       setShowToast(true);
     } else {
       navigate("/register");
     }
   }
 
+  const exerciseCategories = [
+    { id: "all", name: "All Exercises" },
+    { id: "strength", name: "Strength" },
+    { id: "upper", name: "Upper Body" },
+    { id: "lower", name: "Lower Body" }
+  ];
+
+  const exercises = [
+    {
+      id: 1,
+      name: "Barbell Squat",
+      category: "lower",
+      gif: "/Gif/barbellsquat.gif",
+      difficulty: "Intermediate",
+      muscles: ["Quads", "Glutes", "Hamstrings"],
+      equipment: ["Barbell"]
+    },
+    {
+      id: 2,
+      name: "Bench Press",
+      category: "upper",
+      gif: "/Gif/benchpress.gif",
+      difficulty: "Intermediate",
+      muscles: ["Chest", "Triceps", "Shoulders"],
+      equipment: ["Barbell", "Bench"]
+    },
+    {
+      id: 3,
+      name: "Bent Over Row",
+      category: "upper",
+      gif: "/Gif/bentover.gif",
+      difficulty: "Intermediate",
+      muscles: ["Back", "Biceps"],
+      equipment: ["Barbell"]
+    },
+    {
+      id: 4,
+      name: "Deadlift",
+      category: "strength",
+      gif: "/Gif/deadlift.gif",
+      difficulty: "Advanced",
+      muscles: ["Back", "Glutes", "Hamstrings"],
+      equipment: ["Barbell"]
+    },
+    {
+      id: 5,
+      name: "Tricep Extension",
+      category: "upper",
+      gif: "/Gif/tricepextention.gif",
+      difficulty: "Beginner",
+      muscles: ["Triceps"],
+      equipment: ["Dumbbell", "Cable"]
+    }
+  ];
+
+  const filteredExercises = activeCategory === "all" 
+    ? exercises 
+    : exercises.filter(exercise => exercise.category === activeCategory);
+
   return (
-    <div className="exercises-page container my-5">
-      <h2 className="text-center mb-4">Popular Exercises</h2>
-
-      {/* GIF GRID - using only the GIFs you provided */}
-      <div className="row g-4 mb-4">
-        <div className="col-md-4 text-center">
-          <img src="/Gif/barbellsquat.gif" alt="Barbell Squat" className="exercise-gif" />
-          <p className="mt-2">Barbell Squat</p>
-        </div>
-
-        <div className="col-md-4 text-center">
-          <img src="/Gif/benchpress.gif" alt="Bench Press" className="exercise-gif" />
-          <p className="mt-2">Bench Press</p>
-        </div>
-
-        <div className="col-md-4 text-center">
-          <img src="/Gif/bentover.gif" alt="Bent Over Row" className="exercise-gif" />
-          <p className="mt-2">Bent Over Row</p>
-        </div>
-
-        <div className="col-md-6 text-center">
-          <img src="/Gif/deadlift.gif" alt="Deadlift" className="exercise-gif" />
-          <p className="mt-2">Deadlift</p>
-        </div>
-
-        <div className="col-md-6 text-center">
-          <img src="/Gif/tricepextention.gif" alt="Tricep Extension" className="exercise-gif" />
-          <p className="mt-2">Tricep Extension</p>
-        </div>
-      </div>
-
-      {/* Training tips (aligned) */}
-      <section className="exercise-tips my-5">
-        <h3 className="text-center mb-4">Training Tips</h3>
-        <div className="tips-list">
-          <div className="tip-item">
-            <div className="check-icon">✔</div>
-            <div className="tip-text">Always warm up before lifting heavy weights</div>
-          </div>
-          <div className="tip-item">
-            <div className="check-icon">✔</div>
-            <div className="tip-text">Prioritize proper form over heavy loads</div>
-          </div>
-          <div className="tip-item">
-            <div className="check-icon">✔</div>
-            <div className="tip-text">Track your reps, sets, and progression</div>
-          </div>
-          <div className="tip-item">
-            <div className="check-icon">✔</div>
-            <div className="tip-text">Allow enough rest between workouts</div>
-          </div>
-          <div className="tip-item">
-            <div className="check-icon">✔</div>
-            <div className="tip-text">Nutrition plays a key role in recovery</div>
+    <div className="exercises-page">
+      {/* Hero Section */}
+      <section className="exercises-hero">
+        <div className="container">
+          <div className="hero-content text-center">
+            <h1>Build Your Perfect Workout</h1>
+            <p className="hero-subtitle">Master proper form with our exercise library and create customized training plans</p>
           </div>
         </div>
       </section>
 
-      {/* Motivation */}
-      <section className="motivation-quote text-center my-5 p-4">
-        <h3>"Strength doesn’t come from what you can do. It comes from overcoming the things you thought you couldn’t."</h3>
-        <p className="mt-2 small">Every rep, every set, every drop of sweat takes you one step closer to your goals.</p>
-      </section>
-
-      {/* Workout levels (styled) */}
-      <section className="plans-compare my-5">
-        <h3 className="text-center mb-4">Workout Levels</h3>
-        <div className="row g-4">
-          <div className="col-md-6">
-            <div className="plan-card beginner h-100">
-              <h5>Beginner</h5>
-              <p>Focus on compound lifts 3 times per week. Learn form, build consistency, and enjoy the process.</p>
-              <ul>
-                <li>3 full-body sessions / week</li>
-                <li>Focus on technique</li>
-                <li>Light progressive overload</li>
-              </ul>
+      <div className="container my-5">
+        {/* Exercise Categories */}
+        <section className="categories-section mb-5">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="categories-filter">
+                {exerciseCategories.map(category => (
+                  <button
+                    key={category.id}
+                    className={`category-btn ${activeCategory === category.id ? 'active' : ''}`}
+                    onClick={() => setActiveCategory(category.id)}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
+        </section>
 
-          <div className="col-md-6">
-            <div className="plan-card advanced h-100">
-              <h5>Advanced</h5>
-              <p>Increase frequency to 5–6 days per week, add intensity techniques, and track progressive overload.</p>
-              <ul>
-                <li>Split routines (Push / Pull / Legs)</li>
-                <li>Higher volume & intensity</li>
-                <li>Specialisation blocks</li>
-              </ul>
+        {/* Exercise Grid */}
+        <section className="exercises-grid mb-5">
+          <h2 className="section-title text-center mb-4">Popular Exercises</h2>
+          <div className="row g-4">
+            {filteredExercises.map(exercise => (
+              <div key={exercise.id} className="col-md-6 col-lg-4">
+                <div className="exercise-card">
+                  <div className="exercise-gif-container">
+                    <img src={exercise.gif} alt={exercise.name} className="exercise-gif" />
+                    <div className="difficulty-badge">{exercise.difficulty}</div>
+                  </div>
+                  <div className="exercise-content">
+                    <h5 className="exercise-name">{exercise.name}</h5>
+                    <div className="exercise-meta">
+                      <div className="meta-item">
+                        <span className="meta-label">Muscles:</span>
+                        <span>{exercise.muscles.join(", ")}</span>
+                      </div>
+                      <div className="meta-item">
+                        <span className="meta-label">Equipment:</span>
+                        <span>{exercise.equipment.join(", ")}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Training Tips */}
+        <section className="exercise-tips my-5">
+          <h3 className="section-title text-center mb-4">Training Tips</h3>
+          <div className="tips-list">
+            <div className="tip-item">
+              <div className="tip-icon">🔥</div>
+              <div className="tip-content">
+                <h5>Always Warm Up</h5>
+                <p>Prepare your muscles and joints with dynamic stretches before lifting heavy weights</p>
+              </div>
+            </div>
+            <div className="tip-item">
+              <div className="tip-icon">🎯</div>
+              <div className="tip-content">
+                <h5>Perfect Your Form</h5>
+                <p>Prioritize proper technique over heavy loads to prevent injuries and maximize gains</p>
+              </div>
+            </div>
+            <div className="tip-item">
+              <div className="tip-icon">📊</div>
+              <div className="tip-content">
+                <h5>Track Progress</h5>
+                <p>Monitor your reps, sets, and weights to ensure consistent progressive overload</p>
+              </div>
+            </div>
+            <div className="tip-item">
+              <div className="tip-icon">💤</div>
+              <div className="tip-content">
+                <h5>Rest & Recovery</h5>
+                <p>Allow 48-72 hours between working the same muscle groups for optimal recovery</p>
+              </div>
+            </div>
+            <div className="tip-item">
+              <div className="tip-icon">🍎</div>
+              <div className="tip-content">
+                <h5>Fuel Your Body</h5>
+                <p>Proper nutrition and hydration are essential for performance and muscle repair</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Motivation */}
+        <section className="motivation-section text-center my-5">
+          <div className="motivation-card">
+            <div className="quote-icon">❝</div>
+            <h3>"Strength doesn't come from what you can do. It comes from overcoming the things you thought you couldn't."</h3>
+            <p className="quote-subtitle">Every rep, every set, every drop of sweat takes you one step closer to your goals.</p>
+          </div>
+        </section>
+
+        {/* Workout Levels */}
+        <section className="workout-levels my-5">
+          <h3 className="section-title text-center mb-4">Workout Levels</h3>
+          <div className="row g-4">
+            <div className="col-md-6">
+              <div className="level-card beginner">
+                <div className="level-header">
+                  <div className="level-icon">🟢</div>
+                  <h4>Beginner</h4>
+                </div>
+                <p className="level-description">Focus on compound lifts 3 times per week. Learn form, build consistency, and enjoy the process.</p>
+                <ul className="level-features">
+                  <li>3 full-body sessions per week</li>
+                  <li>Focus on proper technique</li>
+                  <li>Light progressive overload</li>
+                  <li>Build fundamental strength</li>
+                </ul>
+                <div className="level-duration">
+                  <span>Recommended: 8-12 weeks</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="level-card advanced">
+                <div className="level-header">
+                  <div className="level-icon">🔴</div>
+                  <h4>Advanced</h4>
+                </div>
+                <p className="level-description">Increase frequency to 5–6 days per week, add intensity techniques, and track progressive overload.</p>
+                <ul className="level-features">
+                  <li>Split routines (Push/Pull/Legs)</li>
+                  <li>Higher volume & intensity</li>
+                  <li>Specialization blocks</li>
+                  <li>Advanced techniques</li>
+                </ul>
+                <div className="level-duration">
+                  <span>Recommended: Ongoing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="cta-section text-center my-5 py-5">
+          <h3 className="cta-title">Ready to Transform Your Body?</h3>
+          <p className="cta-subtitle">Create your personalized workout plan and start your fitness journey today</p>
+          <button className="btn btn-primary btn-cta" onClick={handleCreatePlanClick}>
+            Create My Plan Now
+          </button>
+        </section>
+
+        {/* Toast Notification */}
+        <div className="toast-container position-fixed bottom-0 end-0 p-3" style={{ zIndex: 1055 }}>
+          <div
+            className={`toast align-items-center text-bg-danger border-0 ${showToast ? "show" : "hide"}`}
+            role="alert"
+          >
+            <div className="d-flex">
+              <div className="toast-body">🔒 You are already logged in!</div>
+              <button
+                type="button"
+                className="btn-close btn-close-white me-2 m-auto"
+                onClick={() => setShowToast(false)}
+              ></button>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* CTA */}
-      <div className="text-center my-5">
-        <button className="btn btn-danger btn-lg" onClick={handleCreatePlanClick}>
-          Create My Plan
-        </button>
       </div>
-
-
-      {showToast && (
-        <div
-          className="toast align-items-center bg-danger text-white border-0 show position-fixed bottom-0 end-0 m-3"
-          role="alert"
-        >
-          <div className="d-flex">
-            <div className="toast-body">🔒 You are already logged in!</div>
-            <button
-              type="button"
-              className="btn-close btn-close-white me-2 m-auto"
-              onClick={() => setShowToast(false)}
-            ></button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
+
