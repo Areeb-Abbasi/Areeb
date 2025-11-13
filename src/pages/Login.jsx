@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
-import Swal from "sweetalert2"; // ✅ Added SweetAlert
+import Swal from "sweetalert2"; 
 import "../styles/login.css";
 
 export default function Login() {
@@ -42,14 +42,14 @@ export default function Login() {
 
     try {
       await emailjs.send(
-        "service_pnge6lb",
-        "template_y6lb18c",
+        "service_kj95ilh",
+        "template_sngdqao",
         {
           email,
           passcode: otpCode,
           time: new Date(Date.now() + 15 * 60 * 1000).toLocaleTimeString(),
         },
-        "vh9YclPOhEcrW_xat"
+        "PXpD7V2XEPZP4pakF"
       );
 
       setStep("otp");
@@ -76,12 +76,12 @@ export default function Login() {
         text: "Welcome! Redirecting to your profile...",
         icon: "success",
         confirmButtonColor: "#dc3545",
-        timer: 4000,
+        timer: 3000,
         showConfirmButton: false,
         timerProgressBar: true,
       });
 
-      setTimeout(() => navigate("/profile"), 2000);
+      setTimeout(() => navigate("/profile"), 3000);
     } else {
       setErr("❌ Invalid OTP. Please try again. " + Date.now());
     }
