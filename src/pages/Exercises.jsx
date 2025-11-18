@@ -4,6 +4,9 @@ import { useAuth } from "../context/AuthContext";
 import "../styles/exercises.css";
 
 export default function Exercises() {
+  useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);

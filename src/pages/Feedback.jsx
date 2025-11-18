@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/feedback.css";
 
+
 export default function Feedback() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const { user } = useAuth();
   const [feedbacks, setFeedbacks] = useState([]);
   const [newFeedback, setNewFeedback] = useState({
@@ -20,15 +25,15 @@ export default function Feedback() {
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("fp_feedbacks") || "[]");
-    
+
     // FIX: Ensure all timestamps are numbers and handle missing timestamps
     const processedFeedbacks = stored.map(feedback => ({
       ...feedback,
       timestamp: Number(feedback.timestamp) || (feedback.id && feedback.id > 1000000000000 ? feedback.id : Date.now())
     }));
-    
+
     setFeedbacks(processedFeedbacks);
-    
+
     // Load helpful votes from localStorage
     const votes = JSON.parse(localStorage.getItem("fp_helpful_votes") || "{}");
     setHelpfulVotes(votes);
@@ -50,7 +55,7 @@ export default function Feedback() {
       ...newFeedback,
       id: Date.now(),
       date: new Date().toLocaleString(),
-      timestamp: Date.now(), // FIX: Use Date.now() directly
+      timestamp: Date.now(), 
       userEmail: user?.email || "Anonymous",
       userName:
         user?.firstName && user?.lastName
@@ -59,7 +64,7 @@ export default function Feedback() {
       userInitials: getUserInitials(user),
       helpfulCount: 0,
     };
-
+    
     const updated = [...feedbacks, feedbackData];
     localStorage.setItem("fp_feedbacks", JSON.stringify(updated));
     setFeedbacks(updated);
@@ -93,8 +98,8 @@ export default function Feedback() {
       delete newVotes[voteKey];
       setHelpfulVotes(newVotes);
       localStorage.setItem("fp_helpful_votes", JSON.stringify(newVotes));
-      
-      const updatedFeedbacks = feedbacks.map(f => 
+
+      const updatedFeedbacks = feedbacks.map(f =>
         f.id === feedbackId ? { ...f, helpfulCount: Math.max(0, (f.helpfulCount || 0) - 1) } : f
       );
       setFeedbacks(updatedFeedbacks);
@@ -103,8 +108,8 @@ export default function Feedback() {
       const newVotes = { ...helpfulVotes, [voteKey]: true };
       setHelpfulVotes(newVotes);
       localStorage.setItem("fp_helpful_votes", JSON.stringify(newVotes));
-      
-      const updatedFeedbacks = feedbacks.map(f => 
+
+      const updatedFeedbacks = feedbacks.map(f =>
         f.id === feedbackId ? { ...f, helpfulCount: (f.helpfulCount || 0) + 1 } : f
       );
       setFeedbacks(updatedFeedbacks);
@@ -115,21 +120,21 @@ export default function Feedback() {
   // Filter and sort feedbacks - FIXED SORTING LOGIC
   const filteredFeedbacks = feedbacks
     .filter(feedback => {
-      const categoryMatch = selectedCategory === "all" || 
-                           feedback.category.toLowerCase() === selectedCategory.toLowerCase();
-      
-      const searchMatch = !searchTerm.trim() || 
-                         feedback.text.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         feedback.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         feedback.category.toLowerCase().includes(searchTerm.toLowerCase());
-      
+      const categoryMatch = selectedCategory === "all" ||
+        feedback.category.toLowerCase() === selectedCategory.toLowerCase();
+
+      const searchMatch = !searchTerm.trim() ||
+        feedback.text.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        feedback.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        feedback.category.toLowerCase().includes(searchTerm.toLowerCase());
+
       return categoryMatch && searchMatch;
     })
     .sort((a, b) => {
       // FIX: Ensure we're comparing numbers
       const timestampA = Number(a.timestamp);
       const timestampB = Number(b.timestamp);
-      
+
       switch (sortBy) {
         case "newest":
           return timestampB - timestampA;
@@ -147,20 +152,20 @@ export default function Feedback() {
   // Calculate statistics
   const stats = {
     total: feedbacks.length,
-    averageRating: feedbacks.length > 0 
+    averageRating: feedbacks.length > 0
       ? (feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length).toFixed(1)
       : 0,
-    ratingDistribution: [1,2,3,4,5].map(rating => ({
+    ratingDistribution: [1, 2, 3, 4, 5].map(rating => ({
       rating,
       count: feedbacks.filter(f => f.rating === rating).length
     })),
-    topCategory: feedbacks.length > 0 
+    topCategory: feedbacks.length > 0
       ? Object.entries(
-          feedbacks.reduce((acc, f) => {
-            acc[f.category] = (acc[f.category] || 0) + 1;
-            return acc;
-          }, {})
-        ).sort((a, b) => b[1] - a[1])[0][0]
+        feedbacks.reduce((acc, f) => {
+          acc[f.category] = (acc[f.category] || 0) + 1;
+          return acc;
+        }, {})
+      ).sort((a, b) => b[1] - a[1])[0][0]
       : "No feedback yet"
   };
 
@@ -173,10 +178,10 @@ export default function Feedback() {
       {/* Success Message */}
       {successMessage && (
         <div className="toast-container position-fixed bottom-0 end-0 p-4" style={{ zIndex: 9999 }}>
-          <div 
-            className="toast show custom-success-toast modern" 
-            role="alert" 
-            style={{ 
+          <div
+            className="toast show custom-success-toast modern"
+            role="alert"
+            style={{
               minWidth: '320px',
               border: 'none',
               borderRadius: '12px',
@@ -188,7 +193,7 @@ export default function Feedback() {
                 background: 'white',
                 borderRadius: '12px'
               }}>
-                <div className="success-icon me-3" style={{ 
+                <div className="success-icon me-3" style={{
                   fontSize: '1.8rem',
                   color: '#28a745'
                 }}>
@@ -200,9 +205,9 @@ export default function Feedback() {
                     {successMessage}
                   </div>
                 </div>
-                <button 
-                  type="button" 
-                  className="btn-close" 
+                <button
+                  type="button"
+                  className="btn-close"
                   onClick={() => setSuccessMessage("")}
                   style={{ fontSize: '0.7rem' }}
                 ></button>
@@ -245,21 +250,21 @@ export default function Feedback() {
                 </div>
               </div>
             </div>
-            
+
             {/* Rating Distribution */}
             <div className="rating-distribution mt-3">
               <h6 className="text-center mb-2">Rating Distribution</h6>
               <div className="distribution-bars">
-                {[5,4,3,2,1].map(rating => {
+                {[5, 4, 3, 2, 1].map(rating => {
                   const count = stats.ratingDistribution.find(r => r.rating === rating)?.count || 0;
                   const percentage = stats.total > 0 ? (count / stats.total) * 100 : 0;
                   return (
                     <div key={rating} className="distribution-row">
                       <span className="rating-label">{rating}★</span>
                       <div className="distribution-bar">
-                        <div 
-                          className="distribution-fill" 
-                          style={{width: `${percentage}%`}}
+                        <div
+                          className="distribution-fill"
+                          style={{ width: `${percentage}%` }}
                         ></div>
                       </div>
                       <span className="distribution-count">{count}</span>
@@ -326,7 +331,7 @@ export default function Feedback() {
               {newFeedback.text.length}/500 characters
             </div>
           </div>
-            
+
           {/* Rating Stars */}
           <div className="col-12 text-center">
             <label className="form-label fw-semibold d-block mb-1">
@@ -336,9 +341,8 @@ export default function Feedback() {
               {[1, 2, 3, 4, 5].map((r) => (
                 <span
                   key={r}
-                  className={`star ${
-                    (hoverRating || newFeedback.rating) >= r ? "filled" : ""
-                  }`}
+                  className={`star ${(hoverRating || newFeedback.rating) >= r ? "filled" : ""
+                    }`}
                   onClick={() => handleRating(r)}
                   onMouseEnter={() => setHoverRating(r)}
                   onMouseLeave={() => setHoverRating(0)}
@@ -367,7 +371,7 @@ export default function Feedback() {
             <div className="row g-3 align-items-center">
               <div className="col-md-4">
                 <label className="form-label">Filter by Category:</label>
-                <select 
+                <select
                   className="form-select"
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
@@ -381,7 +385,7 @@ export default function Feedback() {
               </div>
               <div className="col-md-4">
                 <label className="form-label">Sort by:</label>
-                <select 
+                <select
                   className="form-select"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
@@ -407,10 +411,10 @@ export default function Feedback() {
             {(selectedCategory !== "all" || searchTerm.trim()) && (
               <div className="mt-3">
                 <small className="text-muted">
-                  Active filters: 
+                  Active filters:
                   {selectedCategory !== "all" && ` Category: ${selectedCategory}`}
                   {searchTerm.trim() && ` Search: "${searchTerm}"`}
-                  <button 
+                  <button
                     className="btn btn-sm btn-outline-secondary ms-2"
                     onClick={() => {
                       setSelectedCategory("all");
@@ -430,20 +434,19 @@ export default function Feedback() {
         <h4 className="mb-3 text-center">
           Previous Feedback {filteredFeedbacks.length > 0 && `(${filteredFeedbacks.length})`}
         </h4>
-        
+
         {filteredFeedbacks.length === 0 ? (
           <div className="text-center text-muted py-5">
             <div className="empty-state">
               {feedbacks.length === 0 ? (
                 "📝 No feedback submitted yet. Be the first to share your experience!"
               ) : (
-                `📝 No feedback found${
-                  searchTerm || selectedCategory !== "all" ? " matching your criteria" : ""
+                `📝 No feedback found${searchTerm || selectedCategory !== "all" ? " matching your criteria" : ""
                 }`
               )}
             </div>
             {(searchTerm || selectedCategory !== "all") && feedbacks.length > 0 && (
-              <button 
+              <button
                 className="btn btn-outline-primary mt-2"
                 onClick={() => {
                   setSelectedCategory("all");
@@ -487,7 +490,7 @@ export default function Feedback() {
 
               <div className="feedback-footer">
                 <div className="feedback-actions">
-                  <button 
+                  <button
                     className={`btn-helpful ${helpfulVotes[`${user?.email || 'anonymous'}_${f.id}`] ? 'voted' : ''}`}
                     onClick={() => handleHelpfulVote(f.id)}
                   >
@@ -496,9 +499,9 @@ export default function Feedback() {
                 </div>
                 <small className="text-muted">
                   {f.date}
-                </small>  
+                </small>
               </div>
-                              
+
               {user?.email === f.userEmail && (
                 <div className="text-end mt-2">
                   <button
@@ -515,4 +518,5 @@ export default function Feedback() {
       </div>
     </div>
   );
-}
+} 
+

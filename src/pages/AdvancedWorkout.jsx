@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import '../Styles/advanceworkout.css';
 
 export default function AdvancedWorkout() {
+    useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
     return (
         <div className="workout-plan-page">
             <div className="workout-header">

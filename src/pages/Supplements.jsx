@@ -5,6 +5,10 @@ import "../styles/supplements.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Supplements() {
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+    
   const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
 

@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import '../styles/register.css';
 
 export default function Register() {
+  
   const { registerUser } = useAuth();
   const navigate = useNavigate();
 

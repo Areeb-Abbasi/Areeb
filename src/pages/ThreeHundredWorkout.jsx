@@ -1,8 +1,11 @@
-// src/pages/300Workout.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/300workout.css";
 
 export default function Workout300() {
+  useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+
   return (
     <div className="workout300-page container my-5">
       <h2 className="text-center mb-4">The 300 Workout Challenge</h2>

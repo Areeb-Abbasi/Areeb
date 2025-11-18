@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import '../styles/contact.css';
 
 export default function Contact() {
+ 
+useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
+
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState(null); // null | 'sending' | 'success' | 'error'
 

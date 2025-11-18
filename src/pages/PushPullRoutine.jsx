@@ -1,8 +1,11 @@
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/pushpullroutine.css";
 
 export default function PushPullRoutine() {
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
   return (
     <div className="pushpull-page container my-5">
       <h2 className="text-center mb-4">Push Pull Workout Routine</h2>

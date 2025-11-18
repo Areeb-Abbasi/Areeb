@@ -5,6 +5,10 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+    useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 

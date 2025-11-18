@@ -65,7 +65,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // ✅ FIXED: Update profile picture - this now properly updates the user object
+  // ✅ FIXED: Update profile picture
   const updateProfilePicture = (email, profilePic) => {
     try {
       console.log("🖼️ Updating profile picture for:", email);

@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/bodybuildingplan.css";
 
 export default function BodybuildingPlan() {
+  useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
+
   return (
     <div className="bodybuilding-page container my-5">
       <h2 className="text-center mb-4">Bodybuilding Training Plan</h2>

@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaCamera } from "react-icons/fa";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import "../styles/profile.css";
 
 export default function Profile() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const { user, loading, logout, updateUser, updateProfilePicture } = useAuth();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -22,9 +28,9 @@ export default function Profile() {
     activity: ""
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState("");
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   useEffect(() => {
     if (loading) return;
@@ -33,7 +39,6 @@ export default function Profile() {
       navigate("/login", { replace: true });
     }
   }, [loading, user, navigate]);
-
 
   useEffect(() => {
     if (user) {
@@ -51,7 +56,6 @@ export default function Profile() {
         activity: user.activity || ""
       });
 
-
       if (user.profilePic) {
         console.log("🖼️ Loading profile picture from user data:", user.profilePic);
         setProfilePic(user.profilePic);
@@ -61,6 +65,385 @@ export default function Profile() {
       }
     }
   }, [user]);
+
+// FIXED PDF Generation with Multi-page Support
+const generatePDF = async () => {
+  setIsGeneratingPDF(true);
+  try {
+    // Calculate all metrics
+    const bmiValue = calculateBMI();
+    const bmiCat = bmiValue ? getBMICategory(bmiValue) : null;
+    const bmrValue = calculateBMR();
+    const activityMultiplier = getActivityMultiplier();
+    const dailyCal = bmrValue ? (bmrValue * activityMultiplier).toFixed(0) : null;
+
+    // Create separate containers for each page
+    const createPageContainer = (content) => {
+      const container = document.createElement('div');
+      container.style.cssText = `
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 794px;
+        height: 1123px;
+        background: white;
+        padding: 40px;
+        font-family: Arial, sans-serif;
+        color: #333;
+        line-height: 1.4;
+        z-index: 9999;
+        box-sizing: border-box;
+        page-break-after: always;
+      `;
+      container.innerHTML = content;
+      return container;
+    };
+
+    // Page 1: Personal Information & Health Metrics
+    const page1Content = `
+      <div style="width: 100%; max-width: 714px; margin: 0 auto;">
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #667eea;">
+          <h1 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 28px; font-weight: bold;">Fitness Profile Report</h1>
+          <p style="color: #7f8c8d; margin: 0; font-size: 14px;">Generated on ${new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}</p>
+        </div>
+
+        <!-- Personal Information -->
+        <div style="margin-bottom: 30px; padding: 25px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+          <h2 style="color: #2c3e50; margin: 0 0 20px 0; font-size: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Personal Information</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6; width: 30%; font-weight: bold;">Full Name:</td>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">${user.firstName || 'N/A'} ${user.lastName || ''}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6; font-weight: bold;">Username:</td>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">@${user.username || 'N/A'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6; font-weight: bold;">Email:</td>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">${user.email || 'N/A'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6; font-weight: bold;">Gender:</td>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">${user.gender || 'Not specified'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6; font-weight: bold;">Age:</td>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">${user.age || 'Not specified'} years</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6; font-weight: bold;">Height:</td>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">${user.height ? `${user.height} cm` : 'Not specified'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6; font-weight: bold;">Weight:</td>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">${user.weight ? `${user.weight} kg` : 'Not specified'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6; font-weight: bold;">Fitness Goal:</td>
+              <td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">${user.goal || 'Not specified'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold;">Activity Level:</td>
+              <td style="padding: 8px 0;">${user.activity || 'Not specified'}</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Health Metrics -->
+        ${bmiValue ? `
+        <div style="padding: 25px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+          <h2 style="color: #2c3e50; margin: 0 0 20px 0; font-size: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Health Metrics & Analysis</h2>
+          
+          <!-- BMI Section -->
+          <div style="margin-bottom: 20px; padding: 20px; background: white; border-radius: 6px; border-left: 4px solid ${bmiCat.color};">
+            <h3 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 16px;">Body Mass Index (BMI)</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-size: 24px; font-weight: bold; color: ${bmiCat.color}; margin-bottom: 5px;">${bmiValue}</div>
+                <div style="color: #6c757d; font-size: 14px;">${bmiCat.category} Weight Range</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 14px; color: #495057;">Healthy Range: 18.5 - 24.9</div>
+                <div style="font-size: 12px; color: #6c757d;">Based on WHO standards</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calorie Metrics -->
+          <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+            <div style="flex: 1; padding: 20px; background: white; border-radius: 6px; border-left: 4px solid #28a745;">
+              <h3 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 14px;">Basal Metabolic Rate (BMR)</h3>
+              <div style="font-size: 20px; font-weight: bold; color: #28a745; margin-bottom: 5px;">${bmrValue ? bmrValue.toFixed(0) : 'N/A'} calories</div>
+              <div style="color: #6c757d; font-size: 12px;">Calories burned at complete rest</div>
+            </div>
+            
+            <div style="flex: 1; padding: 20px; background: white; border-radius: 6px; border-left: 4px solid #fd7e14;">
+              <h3 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 14px;">Daily Calorie Needs</h3>
+              <div style="font-size: 20px; font-weight: bold; color: #fd7e14; margin-bottom: 5px;">${dailyCal || 'N/A'} calories</div>
+              <div style="color: #6c757d; font-size: 12px;">Based on ${user.activity?.toLowerCase() || 'current'} activity level</div>
+            </div>
+          </div>
+
+          <!-- Activity Info -->
+          <div style="padding: 15px; background: #e7f3ff; border-radius: 6px; border: 1px solid #b3d9ff;">
+            <div style="font-size: 14px; color: #0066cc;">
+              <strong>Activity Multiplier:</strong> ${activityMultiplier}x (${user.activity || 'Not specified'})
+            </div>
+          </div>
+        </div>
+        ` : ''}
+      </div>
+    `;
+
+    // Page 2: Workout Statistics
+    const page2Content = `
+      <div style="width: 100%; max-width: 714px; margin: 0 auto;">
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #667eea;">
+          <h1 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 28px; font-weight: bold;">Fitness Profile Report</h1>
+          <p style="color: #7f8c8d; margin: 0; font-size: 14px;">Page 2 of 3</p>
+        </div>
+
+        <!-- Workout Statistics -->
+        <div style="margin-bottom: 30px; padding: 25px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+          <h2 style="color: #2c3e50; margin: 0 0 20px 0; font-size: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Workout Statistics & History</h2>
+          
+          <!-- Stats Grid -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
+            <div style="text-align: center; padding: 20px; background: white; border-radius: 8px; border: 1px solid #e9ecef;">
+              <div style="font-size: 28px; font-weight: bold; color: #667eea; margin-bottom: 8px;">12</div>
+              <div style="color: #6c757d; font-size: 14px;">Workouts This Month</div>
+            </div>
+            
+            <div style="text-align: center; padding: 20px; background: white; border-radius: 8px; border: 1px solid #e9ecef;">
+              <div style="font-size: 28px; font-weight: bold; color: #28a745; margin-bottom: 8px;">5</div>
+              <div style="color: #6c757d; font-size: 14px;">Current Streak (Days)</div>
+            </div>
+            
+            <div style="text-align: center; padding: 20px; background: white; border-radius: 8px; border: 1px solid #e9ecef;">
+              <div style="font-size: 28px; font-weight: bold; color: #fd7e14; margin-bottom: 8px;">8.2</div>
+              <div style="color: #6c757d; font-size: 14px;">Avg Hours/Week</div>
+            </div>
+            
+            <div style="text-align: center; padding: 20px; background: white; border-radius: 8px; border: 1px solid #e9ecef;">
+              <div style="font-size: 28px; font-weight: bold; color: #dc3545; margin-bottom: 8px;">87%</div>
+              <div style="color: #6c757d; font-size: 14px;">Completion Rate</div>
+            </div>
+          </div>
+
+          <!-- Recent Workouts -->
+          <div style="background: white; border-radius: 6px; padding: 20px; border: 1px solid #e9ecef;">
+            <h3 style="color: #2c3e50; margin: 0 0 15px 0; font-size: 16px;">Recent Workout Sessions</h3>
+            
+            <table style="width: 100%; border-collapse: collapse;">
+              <thead>
+                <tr style="background: #f8f9fa;">
+                  <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; width: 25%;">Workout</th>
+                  <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; width: 35%;">Details</th>
+                  <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; width: 20%;">Date</th>
+                  <th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6; width: 20%;">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef;">
+                    <div style="font-weight: 500; color: #2c3e50;">Upper Body Strength</div>
+                  </td>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef;">
+                    <div style="color: #6c757d;">45 minutes • Strength Training</div>
+                  </td>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef;">
+                    <div style="color: #495057;">Today</div>
+                  </td>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef; text-align: center;">
+                    <span style="color: #28a745; font-weight: 500;">Completed</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef;">
+                    <div style="font-weight: 500; color: #2c3e50;">Cardio Session</div>
+                  </td>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef;">
+                    <div style="color: #6c757d;">30 minutes • Cardiovascular</div>
+                  </td>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef;">
+                    <div style="color: #495057;">Yesterday</div>
+                  </td>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef; text-align: center;">
+                    <span style="color: #28a745; font-weight: 500;">Completed</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef;">
+                    <div style="font-weight: 500; color: #2c3e50;">Leg Day</div>
+                  </td>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef;">
+                    <div style="color: #6c757d;">60 minutes • Strength Training</div>
+                  </td>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef;">
+                    <div style="color: #495057;">2 days ago</div>
+                  </td>
+                  <td style="padding: 12px; border-bottom: 1px solid #e9ecef; text-align: center;">
+                    <span style="color: #ffc107; font-weight: 500;">In Progress</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px;">
+                    <div style="font-weight: 500; color: #2c3e50;">Yoga & Flexibility</div>
+                  </td>
+                  <td style="padding: 12px;">
+                    <div style="color: #6c757d;">40 minutes • Flexibility</div>
+                  </td>
+                  <td style="padding: 12px;">
+                    <div style="color: #495057;">Tomorrow</div>
+                  </td>
+                  <td style="padding: 12px; text-align: center;">
+                    <span style="color: #6c757d; font-weight: 500;">Planned</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Page 3: Recommendations
+    const page3Content = `
+      <div style="width: 100%; max-width: 714px; margin: 0 auto;">
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #667eea;">
+          <h1 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 28px; font-weight: bold;">Fitness Profile Report</h1>
+          <p style="color: #7f8c8d; margin: 0; font-size: 14px;">Page 3 of 3</p>
+        </div>
+
+        <!-- Recommendations -->
+        <div style="margin-bottom: 30px; padding: 25px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+          <h2 style="color: #2c3e50; margin: 0 0 20px 0; font-size: 20px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Personalized Recommendations</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="padding: 20px; background: #e7f3ff; border-radius: 6px; border-left: 4px solid #007bff;">
+              <h3 style="color: #0056b3; margin: 0 0 10px 0; font-size: 16px;">💪 Workout Plan</h3>
+              <div style="color: #004085; font-size: 14px; line-height: 1.5;">
+                Based on your <strong>${user.goal?.toLowerCase() || 'fitness'}</strong> goal, focus on ${
+                  user.goal === 'Weight Loss' ? 'cardio and HIIT workouts 4-5 times per week' :
+                  user.goal === 'Muscle Gain' ? 'strength training with progressive overload 4-5 times per week' :
+                  'balanced full-body workouts 3-4 times per week'
+                }.
+              </div>
+            </div>
+            
+            <div style="padding: 20px; background: #d4edda; border-radius: 6px; border-left: 4px solid #28a745;">
+              <h3 style="color: #155724; margin: 0 0 10px 0; font-size: 16px;">🍎 Nutrition Advice</h3>
+              <div style="color: #0c5460; font-size: 14px; line-height: 1.5;">
+                Maintain daily intake of <strong>${dailyCal || 'appropriate'}</strong> calories with balanced macros: 40% protein, 30% carbs, 30% fats. Stay hydrated with 3-4 liters of water daily.
+              </div>
+            </div>
+            
+            <div style="padding: 20px; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107;">
+              <h3 style="color: #856404; margin: 0 0 10px 0; font-size: 16px;">📊 Progress Tracking</h3>
+              <div style="color: #856404; font-size: 14px; line-height: 1.5;">
+                Track ${
+                  user.goal === 'Weight Loss' ? 'weekly weight and measurements' :
+                  user.goal === 'Muscle Gain' ? 'strength progress and take monthly photos' :
+                  'overall fitness levels and endurance'
+                } for optimal results. Use the app to monitor your journey and adjust as needed.
+              </div>
+            </div>
+
+            <div style="padding: 20px; background: #f8d7da; border-radius: 6px; border-left: 4px solid #dc3545;">
+              <h3 style="color: #721c24; margin: 0 0 10px 0; font-size: 16px;">🎯 Goal Setting</h3>
+              <div style="color: #721c24; font-size: 14px; line-height: 1.5;">
+                Set realistic short-term goals and celebrate milestones. Remember that consistency is more important than perfection in your fitness journey.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding-top: 30px; border-top: 2px solid #e9ecef; color: #6c757d;">
+          <p style="margin: 0 0 5px 0; font-size: 14px; font-weight: 500;">Generated by Workout Planner App</p>
+          <p style="margin: 0; font-size: 12px;">Your Personal Fitness Companion • ${user.email}</p>
+          <p style="margin: 5px 0 0 0; font-size: 10px; color: #adb5bd;">Report completed on ${new Date().toLocaleDateString()}</p>
+        </div>
+      </div>
+    `;
+
+    // Create pages
+    const page1 = createPageContainer(page1Content);
+    const page2 = createPageContainer(page2Content);
+    const page3 = createPageContainer(page3Content);
+
+    // Create a container for all pages
+    const pdfWrapper = document.createElement('div');
+    pdfWrapper.style.cssText = `
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 794px;
+      background: white;
+      z-index: 9999;
+    `;
+
+    pdfWrapper.appendChild(page1);
+    pdfWrapper.appendChild(page2);
+    pdfWrapper.appendChild(page3);
+
+    document.body.appendChild(pdfWrapper);
+
+    // Generate PDF for each page
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const imgWidth = 210;
+    
+    // Capture and add each page
+    for (let i = 0; i < pdfWrapper.children.length; i++) {
+      if (i > 0) {
+        pdf.addPage();
+      }
+      
+      const page = pdfWrapper.children[i];
+      const canvas = await html2canvas(page, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+        backgroundColor: '#ffffff',
+        width: 794,
+        height: 1123,
+        windowWidth: 794,
+        windowHeight: 1123
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+    }
+
+    // Clean up
+    document.body.removeChild(pdfWrapper);
+
+    const fileName = `Fitness_Profile_${user.firstName}_${user.lastName}_${new Date().toISOString().split('T')[0]}.pdf`;
+    pdf.save(fileName);
+    
+    setShowSuccessMessage("📄 PDF downloaded successfully!");
+    setTimeout(() => setShowSuccessMessage(""), 3000);
+    
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    alert('Error generating PDF. Please try again.');
+  } finally {
+    setIsGeneratingPDF(false);
+  }
+};
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -78,7 +461,6 @@ export default function Profile() {
     }));
   };
 
-
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -87,9 +469,7 @@ export default function Profile() {
         const newProfilePic = e.target.result;
         console.log("🖼️ Uploading new profile picture");
 
-
         setProfilePic(newProfilePic);
-
 
         if (user?.email) {
           updateProfilePicture(user.email, newProfilePic);
@@ -131,11 +511,12 @@ export default function Profile() {
 
       if (success) {
         setIsEditing(false);
-        setShowSuccessMessage(true);
+        // FIXED: Set specific message for profile update
+        setShowSuccessMessage("✅ Profile updated successfully!");
         console.log("✅ Profile updated successfully!");
 
         setTimeout(() => {
-          setShowSuccessMessage(false);
+          setShowSuccessMessage("");
         }, 3000);
       }
 
@@ -224,12 +605,14 @@ export default function Profile() {
 
   return (
     <div className="profile-container">
-      {/* Success Message */}
+      {/* FIXED: Success Message - Now shows proper text */}
       {showSuccessMessage && (
         <div className="success-message show">
           <div className="success-content">
-            <span className="success-icon">✅</span>
-            <span className="success-text">Profile updated successfully!</span>
+            <span className="success-icon">
+              {/* {showSuccessMessage.includes ? "✅" : "📄"} */}
+            </span>
+            <span className="success-text">{showSuccessMessage}</span>
           </div>
         </div>
       )}
@@ -726,6 +1109,9 @@ export default function Profile() {
                 </button>
                 <button className="quick-action-btn" onClick={handleUpdateProfile}>
                   ✏️ Update Profile
+                </button>
+                <button className="quick-action-btn" onClick={generatePDF} disabled={isGeneratingPDF}>
+                  {isGeneratingPDF ? '📄 Generating PDF...' : '📄 Download PDF Report'}
                 </button>
                 <button className="quick-action-btn" onClick={handleLogoutClick}>
                   🚪 Logout

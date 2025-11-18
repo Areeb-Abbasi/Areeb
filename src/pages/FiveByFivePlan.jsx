@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/fivebyfive.css";
 
 export default function FiveByFivePlan() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <div className="fivebyfive-page container my-5">
       <h2 className="text-center mb-4">5×5 Strength Training Program</h2>
