@@ -1,0 +1,28 @@
+
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  background: #fff;
+  color: #333;
+}
+
+.workout-header {
+  background-color: #2b2b2b;
+  color: #fff;
+}
+
+.navbar .nav-link.active {
+  color: #c00 !important;
+}
+
+.container {
+  max-width: 1100px;
+}
+
+/* small helpers */
+.card .btn-danger {
+  background: #c00;
+  border: none;
+}

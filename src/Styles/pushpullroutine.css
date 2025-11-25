@@ -1,0 +1,65 @@
+.pushpull-page h2 {
+  font-weight: 700;
+  color: #222;
+}
+
+.plan-section {
+  margin-bottom: 40px;
+}
+
+.plan-section h3 {
+  font-weight: 600;
+  color: #c70039;
+  margin-bottom: 10px;
+}
+
+.plan-section p {
+  font-size: 16px;
+  color: #333;
+}
+
+.plan-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.plan-section ul li {
+  padding: 6px 0;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plan-section ul li::before {
+  content: "•";
+  color: #c70039;
+  font-weight: bold;
+}
+
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th {
+  background: #111;
+  color: white;
+}
+
+.plan-quote {
+  background: linear-gradient(135deg, #ff6b6b, #c70039);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.plan-quote h4 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.plan-quote p {
+  font-size: 15px;
+  opacity: 0.9;
+}

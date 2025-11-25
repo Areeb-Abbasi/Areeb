@@ -1,0 +1,268 @@
+/* HERO */
+.hero {
+  background: url("/images/homepage.jpg") center/cover no-repeat;
+  padding: 120px 0;
+  color: #fff;
+}
+.hero-title {
+  font-size: 48px;
+  font-weight: 700;
+}
+.hero-subtitle {
+  font-size: 20px;
+  margin-top: 12px;
+}
+
+/* PLANNER INTRO */
+.planner-intro {
+  max-width: 800px;
+}
+.planner-intro h2 {
+  /* font-size: 32px; */
+  margin-bottom: 12px;
+  font-weight: 550;
+}
+
+/* FEATURES */
+.feature-img {
+  width: 100%;
+  max-width: 180px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  transition: transform 0.3s;
+}
+.feature-img:hover {
+  transform: scale(1.05);
+}
+.features h4 {
+  /* font-size: 20px; */
+  font-weight: 550;
+  margin-top: 8px;
+}
+.features p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+/* CAROUSEL */
+.gallery img {
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  font-weight: 550;
+}
+
+/* BENEFITS */
+.benefits h4 {
+  /* font-size: 22px; */
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.benefits p {
+  font-size: 15px;
+  color: #555;
+}
+
+/* FAQ */
+.faq {
+  max-width: 800px;
+  font-weight: 550;
+  
+}
+
+/* TESTIMONIALS */
+.testimonial-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #dc3545;
+}
+.testimonial p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* FINAL CTA */
+.cta-banner {
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  color: #fff;
+}
+.cta-banner h2 {
+  /* font-size: 32px; */
+  font-weight: 550;
+  /* font-weight: 700; */
+  margin-bottom: 15px;
+}
+
+.text-center {
+    text-align: center !important;
+    font-weight: 550;
+}
+/* SCROLL REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.gallery img {
+  max-height: 300px;
+  object-fit: contain;
+  width: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Black arrows */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(100%);  
+}
+/* CTA SECTION */
+.cta {
+  background: #f8f9fa;
+  padding: 80px 0;
+  margin: 0;
+}
+.cta h2 {
+  font-size: 2.0rem;
+  font-weight: 550;
+  margin-bottom: 20px;
+}
+.cta p {
+  font-size: 1.2rem;
+  color: #444;
+  margin-bottom: 30px;
+  font-weight: 400;
+}
+
+/* TRANSFORMATION SECTION */
+.transform-section {
+  /* background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); */
+  padding: 80px 0;
+  margin: 0;
+  border-top: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.transform-section h2 {
+  font-size: 2.0rem;
+  font-weight: 550;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.transform-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto 50px;
+  line-height: 1.6;
+}
+
+.transform-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px 25px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  border: 1px solid #e9ecef;
+}
+
+.transform-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.transform-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 20px;
+  border: 4px solid #dc3545;
+  padding: 3px;
+}
+
+.transform-card h5 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transform-card p {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Ensure proper separation */
+.transform-section .row {
+  margin: 0 -15px;
+}
+
+.transform-section .col-md-4 {
+  padding: 15px;
+  display: flex;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cta {
+    padding: 60px 0;
+  }
+  
+  .cta h2 {
+    font-size: 2rem;
+  }
+  
+  .transform-section {
+    padding: 60px 0;
+  }
+  
+  .transform-section h2 {
+    font-size: 2rem;
+  }
+  
+  .transform-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+  }
+  
+  .transform-img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .transform-card h5 {
+    font-size: 1.2rem;
+    min-height: 50px;
+  }
+  
+  .transform-card {
+    padding: 25px 20px;
+  }
+}
+p {
+    margin-top: 0;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+    font-weight: 550;
+}

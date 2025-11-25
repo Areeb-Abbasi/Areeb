@@ -1,0 +1,383 @@
+/* ============================
+   ABOUT PAGE STYLES
+   ============================ */
+
+/* HERO */
+.about-hero {
+  background: #111;
+  color: #fff;
+  padding: 48px 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  box-sizing: border-box;
+  z-index: 0;
+}
+
+.about-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.about-heading {
+  font-size: 48px;
+  margin: 0;
+  flex: 0 0 160px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.about-hero-center {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+.about-hero-center h2 { margin-bottom: 8px; font-size: 22px; }
+.about-hero-center p.lead { color: #ddd; margin-bottom: 4px; }
+.about-hero-center .small-note { color: #bbb; font-size: 13px; }
+
+/* ABOUT CONTENT */
+.about-content { padding: 40px 10px; }
+
+/* Trainer Cards */
+.trainer-card {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.trainer-img { 
+  width: 220px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 12px; /* ensures spacing below each image */
+}
+.trainer-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+}
+.trainer-card h4 {
+  margin-bottom: 6px;
+}
+.trainer-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.about-divider { 
+  margin: 40px auto; 
+  border-top: 1px solid #eee; 
+  max-width: 900px; 
+}
+
+/* MISSION */
+.mission {
+  max-width: 700px;
+  margin: auto;
+  font-size: 16px;
+  color: #444;
+}
+.mission h3 {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* CORE VALUES */
+.values h4 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.values p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* ACHIEVEMENTS SECTION */
+.achievements-section {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 40px 20px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+.achievements-section h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}
+.achievements-section h3.text-danger {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+.achievements-section h3.text-danger:hover {
+  transform: scale(1.1);
+}
+.achievements-section p {
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* TRAINING PHILOSOPHY */
+.philosophy-section h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+  opacity: 0;
+  animation: fadeIn 1s ease 0.2s forwards;
+}
+.philosophy-section h5 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInLeft 0.6s ease forwards;
+}
+.philosophy-section h5:nth-child(2) { animation-delay: 0.3s; }
+.philosophy-section h5:nth-child(3) { animation-delay: 0.4s; }
+.philosophy-section h5:nth-child(4) { animation-delay: 0.5s; }
+.philosophy-section p {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.6s forwards;
+}
+
+/* CERTIFICATIONS SECTION - UPDATED FOR EQUAL HEIGHTS */
+.certifications-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px;
+  padding: 60px 30px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease 0.3s forwards;
+}
+.certifications-section h3 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+.certifications-section .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.certifications-section .col-md-3 {
+  display: flex;
+}
+.cert-item {
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+  
+  /* ADDED FOR EQUAL HEIGHTS */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 280px;
+}
+.cert-item:nth-child(1) { animation-delay: 0.4s; }
+.cert-item:nth-child(2) { animation-delay: 0.5s; }
+.cert-item:nth-child(3) { animation-delay: 0.6s; }
+.cert-item:nth-child(4) { animation-delay: 0.7s; }
+.cert-item:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+.cert-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  display: block;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+.cert-item:hover .cert-icon {
+  transform: scale(1.2) rotate(5deg);
+}
+.cert-item h5 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  flex-shrink: 0;
+}
+.cert-item p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  line-height: 1.5;
+  flex: 1;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* TESTIMONIALS */
+.testimonials {
+  opacity: 0;
+  animation: fadeIn 1s ease 0.4s forwards;
+}
+.testimonials h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+}
+.testimonials blockquote {
+  background: #f8f9fa;
+  border-left: 4px solid #dc3545;
+  padding: 20px;
+  border-radius: 8px;
+  font-style: italic;
+  color: #333;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+.testimonials blockquote:nth-child(1) { animation-delay: 0.5s; }
+.testimonials blockquote:nth-child(2) { animation-delay: 0.6s; }
+.testimonials blockquote:nth-child(3) { animation-delay: 0.7s; }
+.testimonials blockquote:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.testimonials p {
+  margin-top: 8px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceIn {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Scroll reveal animations for sections */
+.about-content > * {
+  opacity: 1;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+
+.about-content > *.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .about-heading { font-size: 36px; flex-basis: 100%; text-align: center; }
+  .about-hero-inner { text-align: center; justify-content: center; }
+  .about-hero-center { max-width: 100%; padding-top: 12px; }
+  
+  .achievements-section h3.text-danger {
+    font-size: 2rem;
+  }
+  
+  .philosophy-section h5 {
+    font-size: 1.2rem;
+  }
+  
+  .certifications-section {
+    padding: 40px 20px;
+  }
+  
+  .cert-item {
+    padding: 25px 15px;
+    margin-bottom: 20px;
+    min-height: 250px;
+  }
+  
+  .cert-icon {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .achievements-section {
+    padding: 30px 15px;
+  }
+  
+  .achievements-section h3.text-danger {
+    font-size: 1.8rem;
+  }
+  
+  .certifications-section {
+    padding: 30px 15px;
+  }
+  
+  .cert-item {
+    padding: 20px 15px;
+    min-height: 220px;
+  }
+  
+  .cert-item h5 {
+    font-size: 1.1rem;
+  }
+  
+  .cert-item p {
+    font-size: 0.9rem;
+  }
+}
